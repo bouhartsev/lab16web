@@ -1,165 +1,165 @@
+import { EffectComposer } from 'https://threejs.org/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'https://threejs.org/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'https://threejs.org/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-			const SCREEN_WIDTH = window.innerWidth,
-				SCREEN_HEIGHT = window.innerHeight,
+const SCREEN_WIDTH = window.innerWidth,
+	  SCREEN_HEIGHT = window.innerHeight;
+	//r = 450;
+//	  r = 1800;
+let mouseY = 0,
+	mouseX = 0,
 
-				r = 450;
+	anim = false,
 
-			let mouseY = 0,
+	windowHalfY = window.innerHeight / 2,
+	windowHalfX = window.innerWidth / 2,
 
-				windowHalfY = window.innerHeight / 2,
+	camera, scene, renderer, composer;
 
-				camera, scene, renderer;
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+	camera = new THREE.PerspectiveCamera( 80, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 9000 );
+	camera.position.z = 10000;
+	//camera.position.z = 1000;
 
-			function init() {
+	scene = new THREE.Scene();
+	scene.fog = new THREE.FogExp2( 0x000000, 0.00015 );
 
-				camera = new THREE.PerspectiveCamera( 80, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 3000 );
-				camera.position.z = 1000;
+	const geometry = createGeometry();
 
-				scene = new THREE.Scene();
+	const material = new THREE.PointsMaterial( { size: 5, blending: THREE.AdditiveBlending, depthTest: false, transparent: true, map: createCanvasMaterial('#fff', 256), depthWrite: false } );
 
-//				const parameters = [[ 0.25, 0xff7700, 1 ], [ 0.5, 0xff9900, 1 ], [ 0.75, 0xffaa00, 0.75 ], [ 1, 0xffaa00, 0.5 ], [ 1.25, 0x000833, 0.8 ],
-//					[ 3.0, 0xaaaaaa, 0.75 ], [ 3.5, 0xffffff, 0.5 ], [ 4.5, 0xffffff, 0.25 ], [ 5.5, 0xffffff, 0.125 ]];
-				const parameters = [ 1, 0xff7700, 1 ];
+	const star = new THREE.Points( geometry, material );
+	star.userData.originalScale = 1;
+	star.rotation.y = Math.random() * 6;
+	star.rotation.x = Math.random() * 6;
+	star.rotation.z = Math.random() * 6;
+	star.position.x = 0;
+	star.position.y = 0;
+	star.position.z = -2000;
+	star.updateMatrix();
+	scene.add( star );
 
-				const geometry = createGeometry();
+	const MyCanvas = document.querySelector('main>#stars');
 
-				for ( let i = 0; i < parameters.length; ++ i ) {
+	renderer = new THREE.WebGLRenderer( { canvas: MyCanvas, antialias: true, alpha: true} );
+	renderer.setClearColor( 0x000000, 0 );
+//	renderer.toneMapping = THREE.ReinhardToneMapping;
+//	renderer.toneMappingExposure = 2;
+	renderer.setPixelRatio( window.devicePixelRatio );
+	renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
 
-					const p = parameters[ i ];
+	const renderScene = new THREE.RenderPass( scene, camera );
+	renderScene.clearAlpha = 0;
 
-					const material = new THREE.PointsMaterial( { size: 5, blending: THREE.AdditiveBlending, depthTest: false, transparent: true } );
+	const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+	bloomPass.threshold = 0;
+	bloomPass.strength = 3;
+	bloomPass.radius = 1;
+	bloomPass.clearAlpha = 0;
 
-					//const line = new THREE.LineSegments( geometry, material );
-					const line = new THREE.Points( geometry, material );
-//					line.scale.x = line.scale.y = line.scale.z = p[ 0 ];
-					line.userData.originalScale = p[ 0 ];
-					line.rotation.y = Math.random() * Math.PI;
-					line.updateMatrix();
-					scene.add( line );
+	composer = new THREE.EffectComposer( renderer );
+	composer.addPass( renderScene );
+	composer.addPass( bloomPass );
+//	composer.renderToScreen = true;
 
-				}
+//	document.body.style.touchAction = 'none';
+	document.body.addEventListener( 'pointermove', onPointerMove );
+	document.body.addEventListener( 'click', onClick );
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
-				document.body.appendChild( renderer.domElement );
+	window.addEventListener( 'resize', onWindowResize );
+}
 
-				document.body.style.touchAction = 'none';
-				document.body.addEventListener( 'pointermove', onPointerMove );
+function createCanvasMaterial(color, size) {
+	var matCanvas = document.createElement('canvas');
+	matCanvas.width = matCanvas.height = size;
+	var matContext = matCanvas.getContext('2d');
+	// create exture object from canvas.
+	var texture = new THREE.Texture(matCanvas);
+	// Draw a circle
+	var center = size / 2;
+	matContext.beginPath();
+	matContext.arc(center, center, size/2, 0, 2 * Math.PI, false);
+	matContext.closePath();
+	matContext.fillStyle = color;
+	matContext.fill();
+	// need to set needsUpdate
+	texture.needsUpdate = true;
+	// return a texture made from the canvas
+	return texture;
+}
 
-				//
+function createGeometry() {
 
-				window.addEventListener( 'resize', onWindowResize );
+	const geometry = new THREE.BufferGeometry();
+	const vertices = [];
 
-				// test geometry swapability
+	const vertex = new THREE.Vector3();
 
-//				setInterval( function () {
+	for ( let i = 0; i < 50000; i ++ ) {
+
+		vertex.x = Math.random() * 20000 - 10000;
+		vertex.y = Math.random() * 20000 - 10000;
+		vertex.z = Math.random() * 20000 - 10000;
+//					vertex.normalize();
+//					vertex.multiplyScalar( r );
+
+		vertices.push( vertex.x, vertex.y, vertex.z );
+
+//					vertex.multiplyScalar( Math.random() * 0.09 + 1 );
 //
-//					const geometry = createGeometry();
-//
-//					scene.traverse( function ( object ) {
-//
-//						if ( object.isLine ) {
-//
-//							object.geometry.dispose();
-//							object.geometry = geometry;
-//
-//						}
-//
-//					} );
-//
-//				}, 1000 );
+//					vertices.push( vertex.x, vertex.y, vertex.z );
 
-			}
+	}
 
-			function createGeometry() {
+	geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
 
-				const geometry = new THREE.BufferGeometry();
-				const vertices = [];
+	return geometry;
 
-				const vertex = new THREE.Vector3();
+}
 
-				for ( let i = 0; i < 1500; i ++ ) {
+function onWindowResize() {
 
-					vertex.x = Math.random() * 2 - 1;
-					vertex.y = Math.random() * 2 - 1;
-					vertex.z = Math.random() * 2 - 1;
-					vertex.normalize();
-					vertex.multiplyScalar( r );
+	windowHalfY = window.innerHeight / 2;
+	windowHalfX = window.innerWidth / 2;
 
-					vertices.push( vertex.x, vertex.y, vertex.z );
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
 
-					vertex.multiplyScalar( Math.random() * 0.09 + 1 );
+	renderer.setSize( window.innerWidth, window.innerHeight );
+}
 
-					vertices.push( vertex.x, vertex.y, vertex.z );
+function onPointerMove( event ) {
 
-				}
+	if ( event.isPrimary === false ) return;
 
-				geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
+	mouseY = event.clientY - windowHalfY;
+	mouseX = event.clientX - windowHalfX;
 
-				return geometry;
+}
 
-			}
+function onClick( event ) {
+	anim = !anim;
+}
 
-			function onWindowResize() {
+function animate() {
 
-				windowHalfY = window.innerHeight / 2;
+	requestAnimationFrame( animate );
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+	render();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+}
 
-			}
+function render() {
+	camera.position.y += ( - mouseY + 200 - camera.position.y ) * .05;
+	camera.position.x += ( mouseX + 200 - camera.position.x ) * .05;
+//	camera.position.y = 0;
+//	camera.position.x = 0;
+	if (anim==true) camera.position.z -= 10;
+//	camera.lookAt( scene.position );
 
-			function onPointerMove( event ) {
-
-				if ( event.isPrimary === false ) return;
-
-				mouseY = event.clientY - windowHalfY;
-
-			}
-
-			//
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				render();
-
-			}
-
-			function render() {
-
-				camera.position.y += ( - mouseY + 200 - camera.position.y ) * .05;
-				camera.lookAt( scene.position );
-
-				renderer.render( scene, camera );
-
-				const time = Date.now() * 0.0001;
-
-				for ( let i = 0; i < scene.children.length; i ++ ) {
-
-					const object = scene.children[ i ];
-
-					if ( object.isLine ) {
-
-						object.rotation.y = time * ( i < 4 ? ( i + 1 ) : - ( i + 1 ) );
-
-						if ( i < 5 ) {
-
-							const scale = object.userData.originalScale * ( i / 5 + 1 ) * ( 1 + 0.5 * Math.sin( 7 * time ) );
-
-							object.scale.x = object.scale.y = object.scale.z = scale;
-
-						}
-
-					}
-
-				}
-
-			}
+//	renderer.render( scene, camera );
+	composer.render(0.001);
+}

@@ -11,9 +11,17 @@ body{
 	justify-content: center;
 }
 main {
+	position: absolute;
 	width: 100%;
-	height: calc(9/16*100vw);
-	max-height: 100%;
+/*	height: calc(9/16*100vw);*/
+/*	max-height: 100%;*/
+	height: 100%;
 
-	background: gray;
+	background: red;
+/*	background: black;*/
+	z-index: -1;
+}
+
+canvas {
+	background: transparent;
 }

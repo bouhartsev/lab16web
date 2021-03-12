@@ -8,12 +8,19 @@
 	<link rel="icon" href="img/logo.png" type="image/png">
 
 	<script src="https://threejs.org/build/three.js"></script>
+	<script src="https://threejs.org/examples/js/postprocessing/EffectComposer.js"></script>
+	<script src="https://threejs.org/examples/js/postprocessing/RenderPass.js"></script>
+	<script src="https://threejs.org/examples/js/postprocessing/MaskPass.js"></script>
+	<script src="https://threejs.org/examples/js/postprocessing/ShaderPass.js"></script>
+	<script src="https://threejs.org/examples/js/shaders/CopyShader.js"></script>
+	<script src="https://threejs.org/examples/js/postprocessing/UnrealBloomPass.js"></script>
 </head>
 <body>
 	<aside class="controls"></aside>
 	<main>
-		<script src="js/stars.js"></script>
+		<canvas id="stars"></canvas>
 	</main>
-	<script src="js/script.js"></script>
+
+	<script src="js/stars.js" type="module"></script>
 </body>
 </html>
