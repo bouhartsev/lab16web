@@ -11,8 +11,8 @@ let mouseY = 0,
 
 	anim = false,
 
-	windowHalfY = window.innerHeight / 2,
-	windowHalfX = window.innerWidth / 2,
+	windowHalfY = SCREEN_HEIGHT / 2,
+	windowHalfX = SCREEN_WIDTH / 2,
 
 	camera, scene, renderer, composer;
 
@@ -46,6 +46,8 @@ function init() {
 
 	renderer = new THREE.WebGLRenderer( { canvas: MyCanvas, antialias: true, alpha: true} );
 	renderer.setClearColor( 0x000000, 0 );
+//	renderer.setClearAlpha ( 0 );
+//	renderer.autoClear = true;
 //	renderer.toneMapping = THREE.ReinhardToneMapping;
 //	renderer.toneMappingExposure = 2;
 	renderer.setPixelRatio( window.devicePixelRatio );
@@ -54,16 +56,24 @@ function init() {
 	const renderScene = new THREE.RenderPass( scene, camera );
 	renderScene.clearAlpha = 0;
 
-	const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
+	const bloomPass = new UnrealBloomPass( new THREE.Vector2( SCREEN_WIDTH, SCREEN_HEIGHT ), 1.5, 0.4, 0.85 );
 	bloomPass.threshold = 0;
 	bloomPass.strength = 3;
 	bloomPass.radius = 1;
 	bloomPass.clearAlpha = 0;
 
-	composer = new THREE.EffectComposer( renderer );
+	var sizeTarget = renderer.getSize( new THREE.Vector2() );
+
+	var renderTarget = new THREE.WebGLRenderTarget( sizeTarget.width * window.devicePixelRatio, sizeTarget.height * window.devicePixelRatio);
+	renderTarget.format = THREE.RGBAFormat;
+//	renderTarget.texture.name = 'EffectComposer.rt1';
+	console.log(renderTarget.format);
+
+	composer = new THREE.EffectComposer( renderer, renderTarget);
 	composer.addPass( renderScene );
 	composer.addPass( bloomPass );
-//	composer.renderToScreen = true;
+	composer.renderToScreen = true;
+	console.log(composer.readBuffer);
 
 //	document.body.style.touchAction = 'none';
 	document.body.addEventListener( 'pointermove', onPointerMove );
