@@ -139,6 +139,7 @@ function onWindowResize() {
 	camera.updateProjectionMatrix();
 
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	composer.setSize( window.innerWidth, window.innerHeight );
 }
 
 function onPointerMove( event ) {
@@ -170,6 +171,6 @@ function render() {
 	if (anim==true) camera.position.z -= 10;
 //	camera.lookAt( scene.position );
 
-//	renderer.render( scene, camera );
+	// renderer.render( scene, camera );
 	composer.render(0.001);
 }
