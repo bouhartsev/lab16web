@@ -1,11 +1,7 @@
-import { EffectComposer } from 'https://threejs.org/examples/jsm/postprocessing/EffectComposer.js';
-import { RenderPass } from 'https://threejs.org/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'https://threejs.org/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 const SCREEN_WIDTH = window.innerWidth,
 	  SCREEN_HEIGHT = window.innerHeight;
-	//r = 450;
-//	  r = 1800;
 let mouseY = 0,
 	mouseX = 0,
 
@@ -22,14 +18,13 @@ animate();
 function init() {
 	camera = new THREE.PerspectiveCamera( 80, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 9000 );
 	camera.position.z = 10000;
-	//camera.position.z = 1000;
 
 	scene = new THREE.Scene();
 	scene.fog = new THREE.FogExp2( 0x000000, 0.00015 );
 
 	const geometry = createGeometry();
 
-	const material = new THREE.PointsMaterial( { size: 5, blending: THREE.AdditiveBlending, depthTest: false, transparent: true, map: createCanvasMaterial('#fff', 256), depthWrite: false } );
+	const material = new THREE.PointsMaterial( { size: 5, blending: THREE.AdditiveBlending, depthTest: false, transparent: true, map: createCanvasMaterial('#daffff', 256), depthWrite: false } );
 
 	const star = new THREE.Points( geometry, material );
 	star.userData.originalScale = 1;
@@ -46,10 +41,6 @@ function init() {
 
 	renderer = new THREE.WebGLRenderer( { canvas: MyCanvas, antialias: true, alpha: true} );
 	renderer.setClearColor( 0x000000, 0 );
-//	renderer.setClearAlpha ( 0 );
-//	renderer.autoClear = true;
-//	renderer.toneMapping = THREE.ReinhardToneMapping;
-//	renderer.toneMappingExposure = 2;
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
 
@@ -62,18 +53,10 @@ function init() {
 	bloomPass.radius = 1;
 	bloomPass.clearAlpha = 0;
 
-	var sizeTarget = renderer.getSize( new THREE.Vector2() );
-
-	var renderTarget = new THREE.WebGLRenderTarget( sizeTarget.width * window.devicePixelRatio, sizeTarget.height * window.devicePixelRatio);
-	renderTarget.format = THREE.RGBAFormat;
-//	renderTarget.texture.name = 'EffectComposer.rt1';
-	console.log(renderTarget.format);
-
-	composer = new THREE.EffectComposer( renderer, renderTarget);
+	composer = new THREE.EffectComposer( renderer);
 	composer.addPass( renderScene );
 	composer.addPass( bloomPass );
 	composer.renderToScreen = true;
-	console.log(composer.readBuffer);
 
 //	document.body.style.touchAction = 'none';
 	document.body.addEventListener( 'pointermove', onPointerMove );
@@ -86,18 +69,14 @@ function createCanvasMaterial(color, size) {
 	var matCanvas = document.createElement('canvas');
 	matCanvas.width = matCanvas.height = size;
 	var matContext = matCanvas.getContext('2d');
-	// create exture object from canvas.
 	var texture = new THREE.Texture(matCanvas);
-	// Draw a circle
 	var center = size / 2;
 	matContext.beginPath();
 	matContext.arc(center, center, size/2, 0, 2 * Math.PI, false);
 	matContext.closePath();
 	matContext.fillStyle = color;
 	matContext.fill();
-	// need to set needsUpdate
 	texture.needsUpdate = true;
-	// return a texture made from the canvas
 	return texture;
 }
 
@@ -172,5 +151,5 @@ function render() {
 //	camera.lookAt( scene.position );
 
 	// renderer.render( scene, camera );
-	composer.render(0.001);
+	composer.render( scene, camera );//0.001
 }
