@@ -10,61 +10,72 @@ let mouseY = 0,
 	windowHalfY = SCREEN_HEIGHT / 2,
 	windowHalfX = SCREEN_WIDTH / 2,
 
-	camera, scene, renderer, composer;
+	camera, scene, geometry, material, star, renderer, composer;
 
 init();
 animate();
 
 function init() {
+	//Создание и позиционирование камеры
 	camera = new THREE.PerspectiveCamera( 80, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 9000 );
-	camera.position.z = 10000;
+	// camera.zoom = 3;
+	// camera.position.z = 0;
+	// camera.position.x = 0;
+	// camera.position.y = 0;
 
+	//создание сцены и исчезновение сцены вдали, на это влияет последнее значение в конструкторе камеры в т.ч.
 	scene = new THREE.Scene();
 	scene.fog = new THREE.FogExp2( 0x000000, 0.00015 );
 
-	const geometry = createGeometry();
+	//материал для звёзд: размер, цвет и т.д.
+	material = new THREE.PointsMaterial( { size: 5, blending: THREE.AdditiveBlending, depthTest: false, transparent: true, map: createCanvasMaterial('#daffff', 256), depthWrite: false } );
 
-	const material = new THREE.PointsMaterial( { size: 5, blending: THREE.AdditiveBlending, depthTest: false, transparent: true, map: createCanvasMaterial('#daffff', 256), depthWrite: false } );
-
-	const star = new THREE.Points( geometry, material );
-	star.userData.originalScale = 1;
-	star.rotation.y = Math.random() * 6;
-	star.rotation.x = Math.random() * 6;
-	star.rotation.z = Math.random() * 6;
-	star.position.x = 0;
-	star.position.y = 0;
-	star.position.z = -2000;
-	star.updateMatrix();
+	geometry = createGeometry();
+	star = new THREE.Points( geometry, material );
+	// star.userData.originalScale = 1;
+	// star.rotation.y = Math.random() * 6;
+	// star.rotation.x = Math.random() * 6;
+	// star.rotation.z = Math.random() * 6;
+	// star.position.x = 0;
+	// star.position.y = 0;
+	// star.position.z = -2000;
+	// star.updateMatrix();
 	scene.add( star );
+	geometry.dispose();
 
+	//определение объекта рендера
 	const MyCanvas = document.querySelector('main>#stars');
 
-	renderer = new THREE.WebGLRenderer( { canvas: MyCanvas, antialias: true, alpha: true} );
-	renderer.setClearColor( 0x000000, 0 );
+	//создание обычного рендера
+	renderer = new THREE.WebGLRenderer( { canvas: MyCanvas, antialias: true, alpha: true, logarithmicDepthBuffer: true} );
+	// renderer.setClearColor( 0x000000, 0 );
 	renderer.setPixelRatio( window.devicePixelRatio );
 	renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
 
+	//Добавление копии сцены для последующего использования
 	const renderScene = new THREE.RenderPass( scene, camera );
-	renderScene.clearAlpha = 0;
+	// renderScene.clearAlpha = 0;
 
+	//Создание эффекта сияния звёзд
 	const bloomPass = new UnrealBloomPass( new THREE.Vector2( SCREEN_WIDTH, SCREEN_HEIGHT ), 1.5, 0.4, 0.85 );
 	bloomPass.threshold = 0;
 	bloomPass.strength = 3;
 	bloomPass.radius = 1;
-	bloomPass.clearAlpha = 0;
+	// bloomPass.clearAlpha = 0;
 
+	//Создание рендера с эффектами
 	composer = new THREE.EffectComposer( renderer);
 	composer.addPass( renderScene );
 	composer.addPass( bloomPass );
-	composer.renderToScreen = true;
 
-//	document.body.style.touchAction = 'none';
-	document.body.addEventListener( 'pointermove', onPointerMove );
+	// document.body.style.touchAction = 'none';
+	// document.body.addEventListener( 'pointermove', onPointerMove );
 	document.body.addEventListener( 'click', onClick );
 
 	window.addEventListener( 'resize', onWindowResize );
 }
 
+//Создание канвас-материала для звёзд
 function createCanvasMaterial(color, size) {
 	var matCanvas = document.createElement('canvas');
 	matCanvas.width = matCanvas.height = size;
@@ -80,7 +91,8 @@ function createCanvasMaterial(color, size) {
 	return texture;
 }
 
-function createGeometry() {
+//Создание геометрии звёзд (спавн, один на 20000).
+function createGeometry(diff=0) {
 
 	const geometry = new THREE.BufferGeometry();
 	const vertices = [];
@@ -91,7 +103,7 @@ function createGeometry() {
 
 		vertex.x = Math.random() * 20000 - 10000;
 		vertex.y = Math.random() * 20000 - 10000;
-		vertex.z = Math.random() * 20000 - 10000;
+		vertex.z = Math.random() * 20000 - 20000 + diff*20000;
 //					vertex.normalize();
 //					vertex.multiplyScalar( r );
 
@@ -100,8 +112,9 @@ function createGeometry() {
 //					vertex.multiplyScalar( Math.random() * 0.09 + 1 );
 //
 //					vertices.push( vertex.x, vertex.y, vertex.z );
-
 	}
+
+	// vertex.dispose();
 
 	geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
 
@@ -110,7 +123,6 @@ function createGeometry() {
 }
 
 function onWindowResize() {
-
 	windowHalfY = window.innerHeight / 2;
 	windowHalfX = window.innerWidth / 2;
 
@@ -122,34 +134,37 @@ function onWindowResize() {
 }
 
 function onPointerMove( event ) {
-
 	if ( event.isPrimary === false ) return;
 
 	mouseY = event.clientY - windowHalfY;
 	mouseX = event.clientX - windowHalfX;
-
 }
 
 function onClick( event ) {
 	anim = !anim;
 }
 
+//Анимация и рендер
 function animate() {
-
 	requestAnimationFrame( animate );
-
 	render();
-
 }
 
 function render() {
-	camera.position.y += ( - mouseY + 200 - camera.position.y ) * .05;
-	camera.position.x += ( mouseX + 200 - camera.position.x ) * .05;
-//	camera.position.y = 0;
-//	camera.position.x = 0;
+	// camera.position.y += ( - mouseY + 200 - camera.position.y ) * .05;
+	// camera.position.x += ( mouseX + 200 - camera.position.x ) * .05;
+
+	//Движение камеры вперёд
 	if (anim==true) camera.position.z -= 10;
-//	camera.lookAt( scene.position );
+
+	//бесконечный спавн звёзд
+	if (camera.position.z%20000 == -13000) {
+		geometry = createGeometry(Math.trunc(camera.position.z/20000)-1);
+		star = new THREE.Points( geometry, material );
+		geometry.dispose();
+		scene.add( star );
+	}
 
 	// renderer.render( scene, camera );
-	composer.render( scene, camera );//0.001
+	composer.render( scene, camera );
 }

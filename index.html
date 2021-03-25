@@ -7,6 +7,8 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="icon" href="img/logo.png" type="image/png">
 
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
 	<script src="https://threejs.org/build/three.js"></script>
 	<script src="https://threejs.org/examples/js/postprocessing/EffectComposer.js"></script>
 	<script src="https://threejs.org/examples/js/postprocessing/RenderPass.js"></script>
@@ -14,9 +16,13 @@
 	<script src="https://threejs.org/examples/js/shaders/CopyShader.js"></script>
 </head>
 <body>
-	<aside class="controls"></aside>
+	<aside class="controls">
+		<!-- Звук
+		Включить/остановить
+		Заново -->
+	</aside>
 	<main>
-		<div class="">
+		<div class="back">
 			<div class="background_container fog1_cont">
 				<div class="background fog1"></div>
 			</div>
@@ -25,8 +31,12 @@
 			</div>
 		</div>
 		<canvas id="stars"></canvas>
+		<!-- Прожектор
+		Текст
+		Летающая тарелка -->
 	</main>
 
 	<script src="js/stars.js" type="module"></script>
+	<script src="js/script.js"></script>
 </body>
 </html>
