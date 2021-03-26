@@ -69,8 +69,8 @@ function init() {
 	composer.addPass( bloomPass );
 
 	// document.body.style.touchAction = 'none';
-	// document.body.addEventListener( 'pointermove', onPointerMove );
-	document.body.addEventListener( 'click', onClick );
+	// document.body.addEventListener('pointermove', onPointerMove);
+	// document.body.addEventListener( 'click', onClick );
 
 	window.addEventListener( 'resize', onWindowResize );
 }

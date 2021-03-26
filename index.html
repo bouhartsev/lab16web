@@ -8,7 +8,9 @@
 	<link rel="icon" href="img/logo.png" type="image/png">
 
 	<meta name="viewport" content="width=device-width,initial-scale=1">
+	
 
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<script src="https://threejs.org/build/three.js"></script>
 	<script src="https://threejs.org/examples/js/postprocessing/EffectComposer.js"></script>
 	<script src="https://threejs.org/examples/js/postprocessing/RenderPass.js"></script>
@@ -17,6 +19,41 @@
 </head>
 <body>
 	<aside class="controls">
+			<div class="item left">
+				<svg id="btnVolume" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100" heigth="100" viewBox="0 0 480 480" style="enable-background:new 0 0 480 480;" xml:space="preserve">
+					<path d="M278.944,17.577c-5.568-2.656-12.128-1.952-16.928,1.92L106.368,144.009H32c-17.632,0-32,14.368-32,32v128
+					c0,17.664,14.368,32,32,32h74.368l155.616,124.512c2.912,2.304,6.464,3.488,10.016,3.488c2.368,0,4.736-0.544,6.944-1.6
+					c5.536-2.656,9.056-8.256,9.056-14.4v-416C288,25.865,284.48,20.265,278.944,17.577z"/>
+					<path d="M368.992,126.857c-6.304-6.208-16.416-6.112-22.624,0.128c-6.208,6.304-6.144,16.416,0.128,22.656
+					C370.688,173.513,384,205.609,384,240.009s-13.312,66.496-37.504,90.368c-6.272,6.176-6.336,16.32-0.128,22.624
+					c3.136,3.168,7.264,4.736,11.36,4.736c4.064,0,8.128-1.536,11.264-4.64C399.328,323.241,416,283.049,416,240.009
+					S399.328,156.777,368.992,126.857z"/>
+					<path d="M414.144,81.769c-6.304-6.24-16.416-6.176-22.656,0.096c-6.208,6.272-6.144,16.416,0.096,22.624
+					C427.968,140.553,448,188.681,448,240.009s-20.032,99.424-56.416,135.488c-6.24,6.24-6.304,16.384-0.096,22.656
+					c3.168,3.136,7.264,4.704,11.36,4.704c4.064,0,8.16-1.536,11.296-4.64C456.64,356.137,480,299.945,480,240.009
+					S456.64,123.881,414.144,81.769z"/>
+				</svg>
+				<svg id="btnMute" version="1.1"  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100" height="100" viewBox="0 0 448.075 448.075" style="enable-background:new 0 0 448.075 448.075;" xml:space="preserve">
+					<path d="M352.021,16.075c0-6.08-3.52-11.84-8.96-14.4c-5.76-2.88-12.16-1.92-16.96,1.92l-141.76,112.96l167.68,167.68V16.075z"/>
+					<path d="M443.349,420.747l-416-416c-6.24-6.24-16.384-6.24-22.624,0s-6.24,16.384,0,22.624l100.672,100.704h-9.376
+					c-9.92,0-18.56,4.48-24.32,11.52c-4.8,5.44-7.68,12.8-7.68,20.48v128c0,17.6,14.4,32,32,32h74.24l155.84,124.48
+					c2.88,2.24,6.4,3.52,9.92,3.52c2.24,0,4.8-0.64,7.04-1.6c5.44-2.56,8.96-8.32,8.96-14.4v-57.376l68.672,68.672
+					c3.136,3.136,7.232,4.704,11.328,4.704s8.192-1.568,11.328-4.672C449.589,437.131,449.589,427.019,443.349,420.747z"/>
+				</svg>
+			</div>
+			<div class="item center">
+				<svg id="btnPlay" class="controlItem" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 8 8">
+					<path d="M0 0v6l6-3-6-3z" transform="translate(1 1)" />
+				</svg>
+				<svg id="btnPause" class="controlItem" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 8 8">
+					<path d="M0 0v6h2v-6h-2zm4 0v6h2v-6h-2z" transform="translate(1 1)" />
+				</svg>
+			</div>
+			<div class="item right">
+				<svg id="btnRepeat" class="controlItem" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
+					<path d="M613.1,212.1H299V83.4c0-44-53.4-66-84.8-34.6L28.8,234.1c-25.1,25.1-25.1,62.8,0,87.9l185.3,185.3c31.4,31.4,84.8,9.4,84.8-34.6V337.8h314.1c138.2,0,251.3,113.1,251.3,251.3c0,138.2-113.1,251.3-251.3,251.3H173.3c-34.6,0-62.8,28.3-62.8,62.8c0,34.6,28.3,62.8,62.8,62.8h439.7C820.4,966,990,796.4,990,589.1C990,381.8,820.4,212.1,613.1,212.1z"/>
+				</svg>
+			</div>
 		<!-- Звук
 		Включить/остановить
 		Заново -->

@@ -9,13 +9,68 @@ body{
 	margin: 0;
 
 	background: black;
-	/* z-index: -10; */
 
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 }
+
+aside.controls {
+	display: none;
+	background: rgba(0, 0, 0, 0.5);
+	width: 50%;
+	height: 15vw;
+	margin: auto;
+	position: relative;	
+	z-index: 99;
+}
+
+aside.controls>.item {
+	position: absolute;
+	top: 50%;
+  	transform: translateY(-50%);
+
+	width: 20%;
+	margin: 0;
+	padding: 0;
+	
+	z-index: 100;
+	cursor: pointer;
+	transition: opacity 0.4s;
+}
+aside.controls>.item>svg {
+	fill: white;
+	height: auto;
+	width: 100%;
+}
+.controlItem:hover {
+	opacity: 0.8;
+}
+
+aside.controls>.item.left {
+	left: 7%;
+}
+
+aside.controls>.item.center {
+	left: 50%;
+  	transform: translateX(-50%) translateY(-50%);
+}
+
+aside.controls>.item.right {
+	right: 5%;
+}
+
+#btnMute {
+	width: 93%;
+	transform: translateX(-14.3%);
+}
+
+#btnVolume,#btnPlay {
+	display: none;
+}
+
 main {
+	/* display: none; */
 	position: absolute;
 	width: 100%;
 /*	height: calc(9/16*100vw);*/
