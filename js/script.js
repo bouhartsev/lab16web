@@ -13,15 +13,27 @@ $(document).ready(function(){
     $("#btnPause").click(tooglePlay);
 
     let timerFadeOut;
-    $("main").click(function(){
-        $(".controls").fadeToggle(200);
+    function fadeOut(){
+        $(".controls").fadeOut(200);
+        $("main").css("cursor", "none");
+    }
+    function timerOn() {
+        if ($("main").css("cursor")==="none") $(".controls").stop(true);
         clearTimeout(timerFadeOut);
-        timerFadeOut = setTimeout(function(){$(".controls").fadeToggle(200);}, 3000);
-    });
-    document.body.addEventListener('pointermove', function(){
+        timerFadeOut = setTimeout(fadeOut, 3000);
+    }
+    function fadeIn(){
+        timerOn();
         $(".controls").fadeIn(200);
-        clearTimeout(timerFadeOut);
-        timerFadeOut = setTimeout(function(){$(".controls").fadeToggle(200);}, 3000);
-        //cursor: none; при выключенном плеере
+        $("main").css("cursor", "default");
+    }
+    $("main").click(function(){
+        timerOn();
+        $(".controls").fadeToggle(200);
+        if ($(this).css("cursor")==="none") $(this).css("cursor", "default");
+        else $(this).css("cursor", "none");
     });
+    document.body.addEventListener('pointermove', fadeIn);
+    document.body.addEventListener('pointerout', fadeOut);
+
 });

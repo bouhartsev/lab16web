@@ -43,7 +43,7 @@ aside.controls>.item>svg {
 	height: auto;
 	width: 100%;
 }
-.controlItem:hover {
+aside.controls>.item:hover {
 	opacity: 0.8;
 }
 
@@ -65,7 +65,7 @@ aside.controls>.item.right {
 	transform: translateX(-14.3%);
 }
 
-#btnVolume,#btnPlay {
+#btnMute,#btnPlay {
 	display: none;
 }
 
@@ -79,7 +79,7 @@ main {
 	overflow: hidden;
 
 	background: black;
-	/* background: red; */
+	cursor: none;
 }
 
 #stars {
