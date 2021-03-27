@@ -1,11 +1,10 @@
 import { UnrealBloomPass } from 'https://threejs.org/examples/jsm/postprocessing/UnrealBloomPass.js';
 
+window['anim'] = false;
 const SCREEN_WIDTH = window.innerWidth,
 	  SCREEN_HEIGHT = window.innerHeight;
 let mouseY = 0,
 	mouseX = 0,
-
-	anim = false,
 
 	windowHalfY = SCREEN_HEIGHT / 2,
 	windowHalfX = SCREEN_WIDTH / 2,
@@ -100,18 +99,11 @@ function createGeometry(diff=0) {
 	const vertex = new THREE.Vector3();
 
 	for ( let i = 0; i < 50000; i ++ ) {
-
 		vertex.x = Math.random() * 20000 - 10000;
 		vertex.y = Math.random() * 20000 - 10000;
 		vertex.z = Math.random() * 20000 - 20000 + diff*20000;
-//					vertex.normalize();
-//					vertex.multiplyScalar( r );
 
 		vertices.push( vertex.x, vertex.y, vertex.z );
-
-//					vertex.multiplyScalar( Math.random() * 0.09 + 1 );
-//
-//					vertices.push( vertex.x, vertex.y, vertex.z );
 	}
 
 	// vertex.dispose();

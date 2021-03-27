@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="icon" href="img/logo.png" type="image/png">
 
-	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 	
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -18,7 +18,12 @@
 	<script src="https://threejs.org/examples/js/shaders/CopyShader.js"></script>
 </head>
 <body>
+	<noscript><p>Ваш браузер не поддерживает скрипты!</p></noscript> 
+	<video src="media/Заставка.mp4" id="originalVideo" muted>
+		Sorry, your browser doesn't support embedded videos.
+	</video>
 	<aside class="controls">
+		<!-- Звук - включить/выключить -->
 			<div class="item left">
 				<svg id="btnVolume" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100" heigth="100" viewBox="0 0 480 480" style="enable-background:new 0 0 480 480;" xml:space="preserve">
 					<path d="M278.944,17.577c-5.568-2.656-12.128-1.952-16.928,1.92L106.368,144.009H32c-17.632,0-32,14.368-32,32v128
@@ -41,6 +46,7 @@
 					c3.136,3.136,7.232,4.704,11.328,4.704s8.192-1.568,11.328-4.672C449.589,437.131,449.589,427.019,443.349,420.747z"/>
 				</svg>
 			</div>
+		<!-- Анимация - включить/остановить -->
 			<div class="item center">
 				<svg id="btnPlay" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 8 8">
 					<path d="M0 0v6l6-3-6-3z" transform="translate(1 1)" />
@@ -49,14 +55,12 @@
 					<path d="M0 0v6h2v-6h-2zm4 0v6h2v-6h-2z" transform="translate(1 1)" />
 				</svg>
 			</div>
+		<!-- Заново -->
 			<div class="item right">
 				<svg id="btnRepeat" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve">
 					<path d="M613.1,212.1H299V83.4c0-44-53.4-66-84.8-34.6L28.8,234.1c-25.1,25.1-25.1,62.8,0,87.9l185.3,185.3c31.4,31.4,84.8,9.4,84.8-34.6V337.8h314.1c138.2,0,251.3,113.1,251.3,251.3c0,138.2-113.1,251.3-251.3,251.3H173.3c-34.6,0-62.8,28.3-62.8,62.8c0,34.6,28.3,62.8,62.8,62.8h439.7C820.4,966,990,796.4,990,589.1C990,381.8,820.4,212.1,613.1,212.1z"/>
 				</svg>
 			</div>
-		<!-- Звук
-		Включить/остановить
-		Заново -->
 	</aside>
 	<main>
 		<div class="back">
@@ -74,6 +78,6 @@
 	</main>
 
 	<script src="js/stars.js" type="module"></script>
-	<script src="js/script.js"></script>
+	<script src="js/script.js" type="text/javascript"></script>
 </body>
 </html>
