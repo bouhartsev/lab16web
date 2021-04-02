@@ -9,17 +9,19 @@ $(document).ready(function(){
         $( "#btnVolume" ).toggle();
         originalVideo.muted = !originalVideo.muted;
     }
-    function tooglePlay(e, stoppingAll=false) {
-        $( "#btnPlay" ).toggle(0);
-        $( "#btnPause" ).toggle(0);
-        window['anim'] = !anim;
-        if (originalVideo.paused && stoppingAll==false) {
-            originalVideo.play();
-            document.documentElement.style.cssText = "--anim_conf: 10s linear forwards running";
-        }
-        else {
-            if (stoppingAll==false) originalVideo.pause();
-            document.documentElement.style.cssText = "--anim_conf: 10s linear forwards paused";
+    function tooglePlay(event, stoppingAll=false) {
+        if (event.key==" " || event.type!="keyup") {
+            $( "#btnPlay" ).toggle(0);
+            $( "#btnPause" ).toggle(0);
+            window['anim'] = !anim;
+            if (originalVideo.paused && stoppingAll==false) {
+                originalVideo.play();
+                document.documentElement.style.cssText = "--anim_conf: 10s linear forwards running";
+            }
+            else {
+                if (stoppingAll==false) originalVideo.pause();
+                document.documentElement.style.cssText = "--anim_conf: 10s linear forwards paused";
+            }
         }
     }
     function toStart() {
@@ -34,6 +36,7 @@ $(document).ready(function(){
     $("#btnPlay").click(tooglePlay);
     $("#btnPause").click(tooglePlay);
     $("#btnRepeat").click(toStart);
+    $(document).on('keyup', tooglePlay);
 
     originalVideo.onended = function(e){
         tooglePlay(e,true);
