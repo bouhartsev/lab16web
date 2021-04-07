@@ -5,8 +5,8 @@ document.documentElement.style.cssText = "--anim_conf: 10s linear forwards pause
 
 const SCREEN_WIDTH = window.innerWidth,
 	  SCREEN_HEIGHT = window.innerHeight;
-let mouseY = 0,
-	mouseX = 0,
+let mouseY = SCREEN_HEIGHT / 2,
+	mouseX = SCREEN_HEIGHT / 2,
 
 	windowHalfY = SCREEN_HEIGHT / 2,
 	windowHalfX = SCREEN_WIDTH / 2,
@@ -69,7 +69,7 @@ function init() {
 	composer.addPass( bloomPass );
 
 	document.body.style.touchAction = 'none';
-	// document.body.addEventListener('pointermove', onPointerMove);
+	document.body.addEventListener('pointermove', onPointerMove);
 	document.body.addEventListener('touchmove', onTouchMove);
 	document.body.addEventListener('touchend', onTouchEnd);
 	document.body.addEventListener('touchstart', onTouchStart);
@@ -131,7 +131,7 @@ function onWindowResize() {
 }
 
 function onPointerMove( event ) {
-	if ( event.isPrimary === false ) return;
+	if ( event.isPrimary === false || event.pointerType!="mouse") return;
 
 	mouseY = event.clientY - windowHalfY;
 	mouseX = event.clientX - windowHalfX;
@@ -153,8 +153,6 @@ function onTouchEnd(event) {
 
 function onTouchStart(event) {
 	let finger = event.touches[0];
-
-	console.log(0);
 
 	tempX = finger.clientX;
 	tempY = finger.clientY;

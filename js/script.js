@@ -1,4 +1,3 @@
-//(document).ready
 $(document).ready(function(){
     let originalVideo = $("#originalVideo").get(0);
     if (originalVideo.paused) originalVideo.play();

@@ -84,7 +84,7 @@ aside.controls>.item.right {
 }
 
 main {
-	/* display: none; */
+	display: none;
 	position: absolute;
 	width: 100%;
 /*	height: calc(9/16*100vw);*/
