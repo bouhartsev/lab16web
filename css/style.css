@@ -1,3 +1,8 @@
+@font-face {
+    font-family: 'Alphabet4';
+    src: url('/css/ALFPHABET-IV.TTF') format("truetype");
+}
+
 :root {
 	--anim_conf: 13s linear forwards running;
 }
@@ -9,6 +14,7 @@
 }
 
 body{
+	position: relative;
 	width: 100%;
 	height: 100%;
 	padding: 0;
@@ -84,7 +90,7 @@ aside.controls>.item.right {
 }
 
 main {
-	display: none;
+	/* display: none; */
 	position: absolute;
 	width: 100%;
 /*	height: calc(9/16*100vw);*/
@@ -109,6 +115,18 @@ main, main.default:active {
 	background: transparent;
 	mix-blend-mode: screen;
 	z-index: 10;
+}
+
+#ufo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	object-fit:cover;
+	object-position: center;
+	width: 100%;
+	height: 100%;
+	mix-blend-mode: screen;
+	z-index: 15;
 }
 
 .background {
@@ -181,4 +199,26 @@ main, main.default:active {
 	100% {
 		transform: scale(1.15);
 	}
+}
+
+.text3d {
+	font-family: Alphabet4;
+	font-size: 150px;
+
+	text-transform: uppercase;
+	text-align: center;
+
+	position: absolute;
+    top: 50%; 
+    right: 50%;
+    transform: translate(50%,-50%);
+
+	color: #f6f6f6;
+	/* #aba9aa */
+	text-shadow: -1px 1px 1px #aba9aa,
+        -1px 2px 1px #aba9aa,
+        -1px 3px 1px #aba9aa,
+        -1px 4px 1px #aba9aa,
+        -1px 5px 1px #aba9aa,
+        -1px 6px 1px #aba9aa;
 }
