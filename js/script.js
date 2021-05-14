@@ -1,30 +1,30 @@
 $(document).ready(function(){
-    let originalVideo = $("#originalVideo").get(0);
-    if (originalVideo.paused) originalVideo.play();
+    let ufoVideo = $("#ufo").get(0);
+    if (ufoVideo.paused) ufoVideo.play();
     window['anim'] = true;
 
     function toogleVolume() {
         $( "#btnMute" ).toggle();
         $( "#btnVolume" ).toggle();
-        originalVideo.muted = !originalVideo.muted;
+        ufoVideo.muted = !ufoVideo.muted;
     }
     function tooglePlay(event, stoppingAll=false) {
         if (event.key==" " || event.type!="keyup") {
             $( "#btnPlay" ).toggle(0);
             $( "#btnPause" ).toggle(0);
             window['anim'] = !anim;
-            if (originalVideo.paused && stoppingAll==false) {
-                originalVideo.play();
+            if (ufoVideo.paused && stoppingAll==false) {
+                ufoVideo.play();
                 document.documentElement.style.cssText = "--anim_conf: 10s linear forwards running";
             }
             else {
-                if (stoppingAll==false) originalVideo.pause();
+                if (stoppingAll==false) ufoVideo.pause();
                 document.documentElement.style.cssText = "--anim_conf: 10s linear forwards paused";
             }
         }
     }
     function toStart() {
-        originalVideo.currentTime = 0;
+        ufoVideo.currentTime = 0;
         $(".fog1_cont, .fog2_cont").css("animation",'none');
         setTimeout(function() {
             $(".fog1_cont, .fog2_cont").css("animation",'');
@@ -37,7 +37,7 @@ $(document).ready(function(){
     $("#btnRepeat").click(toStart);
     $(document).on('keyup', tooglePlay);
 
-    originalVideo.onended = function(e){
+    ufoVideo.onended = function(e){
         tooglePlay(e,true);
         toStart();
     };
