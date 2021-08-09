@@ -159,7 +159,7 @@ function animate() {
 	requestAnimationFrame( animate );
 	render();
 
-	if (isStart==true) {
+	if (!game && isStart==true) {
 		camera.position.z = 0;
 		isStart = false;
 	}
@@ -172,7 +172,7 @@ function render() {
 	}
 
 	//Движение камеры вперёд
-	if (anim==true) camera.position.z -= 10;
+	if (anim==true) camera.position.z -= 10*acceleration;
 
 	//бесконечный спавн звёзд
 	if (camera.position.z%20000 == -13000) {
