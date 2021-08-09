@@ -1,8 +1,14 @@
+var anim = false;
+var game = false;
+var isStart = true;
+var acceleration = 1;
+
 $(document).ready(function(){
     let ufoVideo = $("#ufo").get(0);
     if (ufoVideo.paused) ufoVideo.play();
-    window['anim'] = true;
+    anim = true;
 
+    // MAIN ACTIONS
     function toogleVolume() {
         $( "#btnMute" ).toggle();
         $( "#btnVolume" ).toggle();
@@ -12,10 +18,11 @@ $(document).ready(function(){
         if (event.key==" " || event.type!="keyup") {
             $( "#btnPlay" ).toggle(0);
             $( "#btnPause" ).toggle(0);
-            window['anim'] = !anim;
+            anim = !anim;
             if (ufoVideo.paused && stoppingAll==false) {
                 ufoVideo.play();
                 document.documentElement.style.cssText = "--anim_conf: 10s linear forwards running";
+                $( ".black" ).css("visibility", 'hidden');
             }
             else {
                 if (stoppingAll==false) ufoVideo.pause();
@@ -29,6 +36,7 @@ $(document).ready(function(){
         setTimeout(function() {
             $(".fog1_cont, .fog2_cont").css("animation",'');
         }, 10);
+        isStart = true;
     }
     $("#btnMute").click(toogleVolume);
     $("#btnVolume").click(toogleVolume);
@@ -37,11 +45,15 @@ $(document).ready(function(){
     $("#btnRepeat").click(toStart);
     $(document).on('keyup', tooglePlay);
 
+    ufoVideo.ontimeupdate = function(e){
+        if (ufoVideo.currentTime > 12.02) $(".black").css("visibility", 'visible');
+    };
     ufoVideo.onended = function(e){
         tooglePlay(e,true);
         toStart();
     };
 
+    // CONTROLS ANIMATION
     let timerFadeOut;
     function fadeOut(){
         $(".controls").fadeOut(200);
