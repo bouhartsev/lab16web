@@ -37,6 +37,7 @@ $(document).ready(function(){
         setTimeout(function() {
             $(".fog1_cont, .fog2_cont").css("animation",'');
         }, 10);
+        $(".spotlight").css("animation",'lightOff 0.01s forwards');
         isStart = true;
     }
     $("#btnMute").click(toogleVolume);
@@ -47,8 +48,11 @@ $(document).ready(function(){
     $(document).on('keyup', tooglePlay);
 
     ufoVideo.ontimeupdate = function(e){
-        if (ufoVideo.currentTime > 12.02) $(".black").css("visibility", 'visible');
-        else if (ufoVideo.currentTime > 8.05) acceleration = 0;
+        if (ufoVideo.currentTime > 12) $(".black").css("visibility", 'visible');
+        else if (ufoVideo.currentTime > 8.05) {
+            acceleration = 0;
+            $(".spotlight").css("animation",'lightOn 0.45s ease-in-out 0.1s forwards');
+        }
         else if (ufoVideo.currentTime > 6.2) {
             acceleration = 1 - ( (ufoVideo.currentTime - 6.2 ) / 1.85);
         }

@@ -25,6 +25,7 @@ body{
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	overflow-x: hidden;
 }
 
 aside.controls {
@@ -96,6 +97,9 @@ main {
 	overflow: hidden;
 
 	background: black;
+
+	perspective: 10px;
+	perspective-origin: center 210px;
 }
 
 main:active, main.default {
@@ -194,6 +198,35 @@ main, main.default:active {
 	}
 	100% {
 		transform: scale(1.15);
+	}
+}
+
+.spotlight {
+	visibility: hidden;
+	background: linear-gradient(90deg, rgba(188,255,246,1) 0%, rgba(134,229,248,1) 70%, rgba(188,255,246,1) 100%);
+	opacity: 80%;
+	filter: blur(100px);
+	transform: rotateX(45deg) translate(-50%, -250px);
+
+	position: absolute;
+	width: 70%;
+	height: 200px;
+	bottom: 0;
+	left: 50%;
+	margin: auto;
+}
+
+@keyframes lightOn {
+	to {
+		visibility: visible;
+		transform: rotateX(90deg) translate(-50%, -98px);
+	}
+}
+
+@keyframes lightOff {
+	to {
+		visibility: hidden;
+		transform: rotateX(90deg) translate(-50%, -250px);
 	}
 }
 
