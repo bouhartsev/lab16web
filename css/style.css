@@ -99,7 +99,7 @@ main {
 	background: black;
 
 	perspective: 10px;
-	perspective-origin: center 210px;
+	perspective-origin: center 29%;
 }
 
 main:active, main.default {
@@ -202,24 +202,25 @@ main, main.default:active {
 }
 
 .spotlight {
-	visibility: hidden;
 	background: linear-gradient(90deg, rgba(188,255,246,1) 0%, rgba(134,229,248,1) 70%, rgba(188,255,246,1) 100%);
 	opacity: 80%;
-	filter: blur(100px);
-	transform: rotateX(45deg) translate(-50%, -250px);
+	filter: blur(1000px);
+	transform: rotateX(90deg) translate(-50%, -54vh);
 
 	position: absolute;
-	width: 70%;
-	height: 200px;
+	width: 30%;
+	top: 0;
 	bottom: 0;
 	left: 50%;
 	margin: auto;
+
+	visibility: hidden;
 }
 
 @keyframes lightOn {
 	to {
 		visibility: visible;
-		transform: rotateX(90deg) translate(-50%, -98px);
+		transform: rotateX(90deg) translate(-50%, -46.9vh);
 	}
 }
 
@@ -232,24 +233,44 @@ main, main.default:active {
 
 .text3d {
 	font-family: Alphabet4;
-	font-size: 150px;
+	font-size: 0;
 
 	text-transform: uppercase;
 	text-align: center;
 
 	position: absolute;
-    top: 50%; 
-    right: 50%;
-    transform: translate(50%,-50%);
+    top: 0;
+    left: 0;
+	width: 100%;
+    transform: translate3d(0, 45vh, -20px);
 
 	color: #f6f6f6;
 	/* #aba9aa */
-	text-shadow: -1px 1px 1px #aba9aa,
-        -1px 2px 1px #aba9aa,
-        -1px 3px 1px #aba9aa,
-        -1px 4px 1px #aba9aa,
-        -1px 5px 1px #aba9aa,
-        -1px 6px 1px #aba9aa;
+	text-shadow: -1px -1px 1px #aba9aa,
+        -1px -2px 1px #aba9aa,
+        -1px -3px 1px #aba9aa,
+        -1px -4px 1px #aba9aa,
+        -1px -5px 1px #aba9aa,
+        -1px -6px 1px #aba9aa;
+
+	visibility: hidden;
+	/* animation: textOn 2s ease-in-out forwards; */
+}
+
+@keyframes textOn {
+	to {
+		visibility: visible;
+		transform: translate3d(0, 45vh, 1px);
+		font-size: 7vw;
+	}
+}
+
+@keyframes textOff {
+	to {
+		visibility: hidden;
+		transform: translate3d(0, 45vh, -80px);
+		font-size: 0;
+	}
 }
 
 .black {

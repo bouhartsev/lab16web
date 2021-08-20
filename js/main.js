@@ -5,8 +5,8 @@ var acceleration = 1;
 
 $(document).ready(function(){
     let ufoVideo = $("#ufo").get(0);
-    // if (ufoVideo.paused) ufoVideo.play();
-    // anim = true;
+    if (ufoVideo.paused) ufoVideo.play();
+    anim = true;
 
     // MAIN ACTIONS
     function toogleVolume() {
@@ -38,6 +38,7 @@ $(document).ready(function(){
             $(".fog1_cont, .fog2_cont").css("animation",'');
         }, 10);
         $(".spotlight").css("animation",'lightOff 0.01s forwards');
+        $(".text3d").css("animation",'textOff 0.01s forwards');
         isStart = true;
     }
     $("#btnMute").click(toogleVolume);
@@ -48,10 +49,11 @@ $(document).ready(function(){
     $(document).on('keyup', tooglePlay);
 
     ufoVideo.ontimeupdate = function(e){
-        if (ufoVideo.currentTime > 12) $(".black").css("visibility", 'visible');
+        if (ufoVideo.currentTime > 11.8) $(".black").css("visibility", 'visible');
         else if (ufoVideo.currentTime > 8.05) {
             acceleration = 0;
-            $(".spotlight").css("animation",'lightOn 0.45s ease-in-out 0.1s forwards');
+            $(".spotlight").css("animation",'lightOn 1s ease-in-out 0.1s forwards');
+            $(".text3d").css("animation",'textOn 2s ease-in-out 1s forwards');
         }
         else if (ufoVideo.currentTime > 6.2) {
             acceleration = 1 - ( (ufoVideo.currentTime - 6.2 ) / 1.85);
