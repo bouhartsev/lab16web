@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'Alphabet4';
-    src: url('/css/ALFPHABET-IV.TTF') format("truetype");
+    src: url('ALFPHABET-IV.TTF') format("truetype");
 }
 
 :root {
