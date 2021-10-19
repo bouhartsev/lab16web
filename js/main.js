@@ -6,30 +6,9 @@ var acceleration = 1;
 $(document).ready(function(){
     let ufoVideo = $("#ufo").get(0);
     if (ufoVideo.paused) ufoVideo.play();
-    anim = true;
+    // anim = true;
 
-    // MAIN ACTIONS
-    function toogleVolume() {
-        $( "#btnMute" ).toggle();
-        $( "#btnVolume" ).toggle();
-        ufoVideo.muted = !ufoVideo.muted;
-    }
-    function tooglePlay(event, stoppingAll=false) {
-        if (event.key==" " || event.type!="keyup") {
-            $( "#btnPlay" ).toggle(0);
-            $( "#btnPause" ).toggle(0);
-            anim = !anim;
-            if (ufoVideo.paused && stoppingAll==false) {
-                ufoVideo.play();
-                document.documentElement.style.cssText = "--anim_conf: 10s linear forwards running";
-                $( ".black" ).css("visibility", 'hidden');
-            }
-            else {
-                if (stoppingAll==false) ufoVideo.pause();
-                document.documentElement.style.cssText = "--anim_conf: 10s linear forwards paused";
-            }
-        }
-    }
+    // MAIN ACTIONS (right to left)
     function toStart() {
         acceleration = 1;
         ufoVideo.currentTime = 0;
@@ -41,13 +20,43 @@ $(document).ready(function(){
         $(".text3d").css("animation",'textOff 0.01s forwards');
         isStart = true;
     }
+    function togglePlayVideo(event) {
+        $( "#btnPlay" ).toggle(0);
+        $( "#btnPause" ).toggle(0);
+        anim = !anim;
+        if (event.type=="play") {
+            document.documentElement.style.cssText = "--anim_conf: 10s linear forwards running";
+            $( ".black" ).css("visibility", 'hidden');
+        }
+        else {
+            document.documentElement.style.cssText = "--anim_conf: 10s linear forwards paused";
+        }
+    }
+    function tooglePlay(event) {
+        if (event.key==" " || event.type!="keyup") {
+            if (ufoVideo.paused) {
+                ufoVideo.play();
+            }
+            else {
+                ufoVideo.pause();
+            }
+        }
+    }
+    function toogleVolume() {
+        $( "#btnMute" ).toggle();
+        $( "#btnVolume" ).toggle();
+        ufoVideo.muted = !ufoVideo.muted;
+    }
+
     $("#btnMute").click(toogleVolume);
     $("#btnVolume").click(toogleVolume);
     $("#btnPlay").click(tooglePlay);
     $("#btnPause").click(tooglePlay);
     $("#btnRepeat").click(toStart);
     $(document).on('keyup', tooglePlay);
-
+    ufoVideo.onplay = togglePlayVideo;
+    ufoVideo.onpause = togglePlayVideo;
+    
     ufoVideo.ontimeupdate = function(e){
         if (ufoVideo.currentTime > 11.8) $(".black").css("visibility", 'visible');
         else if (ufoVideo.currentTime > 8.05) {
@@ -60,7 +69,7 @@ $(document).ready(function(){
         }
     };
     ufoVideo.onended = function(e){
-        tooglePlay(e,true);
+        ufoVideo.pause();
         toStart();
     };
 

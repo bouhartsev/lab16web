@@ -83,7 +83,7 @@ aside.controls>.item.right {
 	transform: translateX(-14.3%);
 }
 
-#btnMute,#btnPlay {
+#btnVolume,#btnPause {
 	display: none;
 }
 
@@ -204,8 +204,8 @@ main, main.default:active {
 .spotlight {
 	background: linear-gradient(90deg, rgba(188,255,246,1) 0%, rgba(134,229,248,1) 70%, rgba(188,255,246,1) 100%);
 	opacity: 80%;
-	filter: blur(1000px);
-	transform: rotateX(90deg) translate(-50%, -54vh);
+	filter: blur(20px);
+	transform: rotateX(90deg) translate(-50%, -55vh);
 
 	position: absolute;
 	width: 30%;
@@ -220,7 +220,7 @@ main, main.default:active {
 @keyframes lightOn {
 	to {
 		visibility: visible;
-		transform: rotateX(90deg) translate(-50%, -46.9vh);
+		transform: rotateX(90deg) translate(-50%, -46.9vh);/* 46.9vh */
 	}
 }
 
@@ -300,4 +300,10 @@ main, main.default:active {
 
 .black a:nth-child(3) {
 	opacity: 0;
+}
+
+@media (max-width: 400px) {
+	.spotlight {
+		filter: blur(5px);
+	}
 }
